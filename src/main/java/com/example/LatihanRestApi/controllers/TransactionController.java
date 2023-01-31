@@ -78,12 +78,15 @@ public class TransactionController {
         if (Constants.Max_Topup < topUpDTO.getAmount()) {
             return new ResponseEntity<>("max topup exceeded", HttpStatus.BAD_REQUEST);
         }
-        if (Constants.Max_Balance < topUpDTO.getAmount()) {
+        if (!transactionService.maxBalanceCheck(topUpDTO.getUsername(), topUpDTO.getAmount())) {
             return new ResponseEntity<>("max balance exceeded", HttpStatus.BAD_REQUEST);
         }
 
         transactionService.addNominal(topUpDTO.getUsername(), topUpDTO.getAmount());
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
+
+
+
 }
 

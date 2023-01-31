@@ -63,7 +63,6 @@ public class TransactionService {
         User originUser = userRepo.findByUsername(username);
         Long balanceOriginAfter = originUser.getBalance() - Math.round(amount * Constants.Transaction_Tax + amount) ;
 
-
         if (balanceOriginAfter < Constants.Min_Balance) {
             return false;
         }
@@ -85,7 +84,20 @@ public class TransactionService {
         Long balance = nominal + amount;
         user.setBalance(balance);
         userRepo.save(user);
+
+        Transaction transaction = new Transaction(username, amount, nominal, balance, "Settled", LocalDate.now(), user);
+        transactionRepo.save(transaction);
     }
 
+    public Boolean maxBalanceCheck(String username, Long amount) {
+        User user = userRepo.findByUsername(username);
+        Long balanceOriginAfter = user.getBalance() + Math.round(amount * Constants.Transaction_Tax + amount);
+
+        if (balanceOriginAfter > Constants.Max_Balance) {
+            return false;
+        }
+        return true;
+    }
 
 }
+
