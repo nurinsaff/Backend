@@ -1,18 +1,19 @@
 package com.example.LatihanRestApi.dto;
 
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
 
 
-public class TransferDTO {
-    String transferID;
+public class TransferResponseDTO {
+    Long transferID;
     String originUsername;
     String destinationUsername;
-    String amount;
+    Long amount;
     String status;
 
 }

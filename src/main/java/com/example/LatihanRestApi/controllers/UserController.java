@@ -66,7 +66,7 @@ public class UserController {
             return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
         }
         userService.Ban(username);
-        return new ResponseEntity<>("baned", HttpStatus.OK);
+        return new ResponseEntity<>("User banned", HttpStatus.OK);
     }
 
     @PutMapping("{username}/unban")

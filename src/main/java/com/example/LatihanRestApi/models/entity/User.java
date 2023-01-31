@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -29,11 +31,13 @@ public class User {
     private boolean ban;
 
     @Column(name="balance")
-    private Long balance;
-
- //   @Column(name="checkpass")
-    //   int Max_try = Constants.Max_Try;
+    private Long balance=0L;
 
     int counter = 0;
+
+    @OneToMany(mappedBy = "user")
+    List<Transaction> transactions;
+
+    private Long maxTransaction = Constants.Max_Transaction_Amount;
 }
 

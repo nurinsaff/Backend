@@ -9,7 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLOutput;
+
 import java.util.List;
 
 
@@ -21,13 +21,6 @@ public class UserService {
 
     @Autowired
     private UserRepo userRepo;
-
-    @Autowired
-    private User user;
-
-   // public User save(User user) {
-     //   return userRepo.save(user);
-    // }
 
     public void removeOne(Long id) {
         userRepo.deleteById(id);
@@ -100,11 +93,12 @@ public class UserService {
     public void addKtp(String username, String nik){
         User user = userRepo.findByUsername(username);
         user.setNik(nik);
+        user.setMaxTransaction(Constants.Max_Transaction_Amount_With_KTP);
         userRepo.save(user);
     }
 
     public Boolean validatePassword(User user, String oldPassword) throws Exception {
-        String password = user.getPassword();
+//        String password = user.getPassword();
 
         if(!user.getPassword().equals(oldPassword)) {
             user.setCounter(user.getCounter() + 1);
@@ -121,7 +115,7 @@ public class UserService {
         User user = userRepo.findByUsername(username);
 
         if(!validatePassword(user, oldPassword)){
-            throw new Exception("Password invalid");
+            throw new Exception("password invalid");
         }
 
         if(!validateFormatPass(newPassword)){
@@ -131,4 +125,8 @@ public class UserService {
             userRepo.save(user);
     }
 
+
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username);
+    }
 }
