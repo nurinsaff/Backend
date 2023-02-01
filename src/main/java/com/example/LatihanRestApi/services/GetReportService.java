@@ -1,6 +1,7 @@
 package com.example.LatihanRestApi.services;
 
 import com.example.LatihanRestApi.dto.GetReportDTO;
+import com.example.LatihanRestApi.dto.GetReportResponseDTO;
 import com.example.LatihanRestApi.models.entity.Transaction;
 import com.example.LatihanRestApi.models.entity.User;
 import com.example.LatihanRestApi.models.repository.TransactionRepo;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +42,19 @@ public class GetReportService {
             Long currentBalance = transactions.get(transactions.size() - 1).getBalanceAfter();
             Long oldBalance = transactions.get(0).getBalanceBefore();
 
+            System.out.println(">>>" + user.getUsername());
 
-            Double changeInPercentage;
+            String changeInPercentage;
+            Double temp;
+
+            DecimalFormat df = new DecimalFormat("###.##");
             if (oldBalance == 0){
-                changeInPercentage = 0.0;
+                changeInPercentage = "0%";
             } else {
                 // 3. Hitung change in percentage
-                changeInPercentage = (double) (((currentBalance - oldBalance) / oldBalance) * 100);
+                temp = ((1.0 * (currentBalance - oldBalance) / oldBalance) * 100);
+                System.out.println(temp);
+                changeInPercentage = df.format(temp) + "%";
             }
             // 4. Membuat list report semua user
             GetReportDTO getReportDTO = new GetReportDTO(user.getUsername(), changeInPercentage, localDate.toString());

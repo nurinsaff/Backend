@@ -9,10 +9,10 @@ import lombok.Data;
 public class GetReportDTO {
 
     String username;
-    Double changeInPercentage;
+    String changeInPercentage;
     String balanceChangeDate;
 
-    public GetReportDTO(String username, Double changeInPercentage, String balanceChangeDate) {
+    public GetReportDTO(String username, String changeInPercentage, String balanceChangeDate) {
         this.username = username;
         this.changeInPercentage = changeInPercentage;
         this.balanceChangeDate = balanceChangeDate;

@@ -81,6 +81,9 @@ public class UserController {
     @PutMapping("{username}/addktp")
     public ResponseEntity<Object> addktp(@PathVariable String username, @RequestBody KtpAddDTO addKtpDTO) {
 
+        if(!userService.validateFormatNik(addKtpDTO.getNik())){
+            return new ResponseEntity<>("Format invalid", HttpStatus.BAD_REQUEST);
+        }
         if (!userService.findUsername(username)) {
             return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
         }

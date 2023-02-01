@@ -29,8 +29,12 @@ public class TransactionController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> createTransaction(@RequestBody TransferRequestDTO transferRequestDTO) {
-//        String password = user.getPassword();
+
         User user = userService.findByUsername(transferRequestDTO.getUsername());
+
+        if(userService.isBanned(transferRequestDTO.getUsername())){
+            return new ResponseEntity<>("user is banned", HttpStatus.BAD_REQUEST);
+        }
 
         if (!userService.findUsername(transferRequestDTO.getUsername())) {
             return new ResponseEntity<>("username not found", HttpStatus.BAD_REQUEST);
@@ -42,6 +46,7 @@ public class TransactionController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+
         if (!userService.findUsername(transferRequestDTO.getDestinationUsername())) {
             return new ResponseEntity<>("destination user not found", HttpStatus.BAD_REQUEST);
         }
@@ -65,6 +70,10 @@ public class TransactionController {
 
         if (!userService.findUsername(topUpDTO.getUsername())) {
             return new ResponseEntity<>("user not found", HttpStatus.BAD_REQUEST);
+        }
+
+        if(userService.isBanned(topUpDTO.getUsername())){
+            return new ResponseEntity<>("user is banned", HttpStatus.BAD_REQUEST);
         }
 
         try {

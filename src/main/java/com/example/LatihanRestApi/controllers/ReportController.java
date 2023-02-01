@@ -1,5 +1,7 @@
 package com.example.LatihanRestApi.controllers;
 
+import com.example.LatihanRestApi.dto.GetReportDTO;
+import com.example.LatihanRestApi.dto.GetReportResponseDTO;
 import com.example.LatihanRestApi.models.entity.User;
 import com.example.LatihanRestApi.services.GetReportService;
 import lombok.Getter;
@@ -25,7 +27,8 @@ public class ReportController {
     @GetMapping("/getreport/{localDate}")
     public ResponseEntity<Object> getReport(@PathVariable LocalDate localDate){
 
-        return new ResponseEntity<>(getReportService.getReport(localDate), HttpStatus.OK);
+        // memasukkan list yang sudah dibuat kedalam dto untuk ditampilkan
+        return new ResponseEntity<>(new GetReportResponseDTO(getReportService.getReport(localDate)), HttpStatus.OK);
 //        return ResponseEntity.ok().body(getReportService.getReport(localDate));
     }
 }

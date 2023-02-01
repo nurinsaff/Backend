@@ -72,10 +72,16 @@ public class UserService {
         return new BalanceDTO(user.getBalance(), limit);
     }
 
+
     public void Ban(String username){
         User user = userRepo.findByUsername(username);
         user.setBan(true);
         userRepo.save(user);
+    }
+
+    public Boolean isBanned(String username){
+        User user = userRepo.findByUsername(username);
+        return user.isBan();
     }
 
     public void Unban(String username){
@@ -89,6 +95,14 @@ public class UserService {
 
         return userRepo.findByNik(nik) != null;
     }
+
+    public Boolean validateFormatNik(String nik){
+
+        String regex = "\\d+";
+
+        return nik.matches(regex);
+    }
+
 
     public void addKtp(String username, String nik){
         User user = userRepo.findByUsername(username);
@@ -104,7 +118,7 @@ public class UserService {
             user.setCounter(user.getCounter() + 1);
             if (user.getCounter() == (Constants.Max_Try)){
                Ban(user.getUsername());
-                throw new Exception("User is baned");
+                throw new Exception("User is banned");
             }
             return false;
         }
